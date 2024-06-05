@@ -8,3 +8,12 @@
 
 ;;task structure
 (struct task (id func args priority status) #:mutable)
+
+;;task queue
+(define task-queue (make-queue))
+
+;;task-id counter using semaphores
+(define task-id-counter (make-semaphore 1 0))
+
+;;thread pool size
+(define thread-pool-size 4)
