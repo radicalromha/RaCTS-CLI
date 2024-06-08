@@ -17,3 +17,6 @@
 
 ;;thread pool size
 (define thread-pool-size 4)
+
+;;worker threads
+(define worker-threads '())
