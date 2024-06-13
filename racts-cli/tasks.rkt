@@ -1,6 +1,6 @@
 #lang racket
 
-(provide submot-task get-task-status configure-scheduler)
+(provide submit-task get-task-status configure-scheduler)
 
 (require racket/thread
          racket/queue
@@ -45,3 +45,26 @@
 (define (configure-scheduler new-thread-pool-size)
   (set! thread-pool-size new-thread-pool-size)
   (schedule-tasks))
+
+;;function to schedule tasks
+(define (schedule-tasks)
+  (when (< (length worker-threads) thread-pool-size)
+    (let loop ([queue task-queue])
+      (unless (queue-empty? queue)
+        (let ([task (queue-dequeue! queue)])
+          (set-task-status! task 'running)
+          (define worker thread
+            (thread 
+              (lambda ()
+                ((task-func task) (task-args task))
+                (set-task-status! task 'completed))))
+          (set! worker-threads (cons worker-thread worker-threads))
+          (loop queue))))))
+
+;;funtion to set the task status
+(define (set-task-status! task status)
+  (set-task-status! task status))
+
+;;initialize semaphore 
+(semaphore-post task-id-counter)
+
