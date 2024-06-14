@@ -24,8 +24,17 @@
 ;; http://docs.racket-lang.org/style/index.html
 
 ;; Code here
+#lang racket
 
+(require "cli.rkt")
 
+(provide main)
+
+(define (main)
+  (cli/main))
+
+(main)
+;;
 
 (module+ test
   ;; Any code in this `test` submodule runs when this file is run using DrRacket
